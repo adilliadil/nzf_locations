@@ -1,7 +1,5 @@
 package com.example.nzf.nzfmap;
 
-import android.os.Debug;
-import android.provider.SyncStateContract;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,11 +9,16 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.parse.Parse;
+import com.parse.ParseObject;
 
 public class MapsActivity extends FragmentActivity {
     static final LatLng MELBOURNE = new LatLng(-37.8254,144.95410);
     static final LatLng SYDNEY = new LatLng(-33.86916,151.20437);
-
+    //TODO create a database
+    //TODO add interface for the data
+    //TODO make the Markers more sophisticated
+    //TODO create a sign in form
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
 
     @Override
@@ -23,6 +26,13 @@ public class MapsActivity extends FragmentActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
         setUpMapIfNeeded();
+        // Enable Local Datastore.
+        Parse.enableLocalDatastore(this);
+
+        Parse.initialize(this, "TSeJqGQRGo18G0whgiGGsAkOJv8y1Br4vZ3T4jyu", "xjv1Bfyrp7hGeQBYHLz4PEEcPo13N6xBB1ee48VF");
+        ParseObject testObject = new ParseObject("TestObject");
+        testObject.put("key1", "value1");
+        testObject.saveInBackground();
     }
 
     @Override
@@ -73,7 +83,7 @@ public class MapsActivity extends FragmentActivity {
         mo.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_launcher));
         mMap.addMarker(mo);
 
-        Log.d(Constants.LOG,"on setUpMap");
+        Log.d(Constants.LOG, "on setUpMap");
 
     }
     public interface Constants {
