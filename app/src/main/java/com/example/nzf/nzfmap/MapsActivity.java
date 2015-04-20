@@ -12,11 +12,18 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.parse.Parse;
 import com.parse.ParseObject;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Date;
+
 public class MapsActivity extends FragmentActivity {
     static final LatLng MELBOURNE = new LatLng(-37.8254,144.95410);
     static final LatLng SYDNEY = new LatLng(-33.86916,151.20437);
-    //TODO create a database
-    //TODO add interface for the data
+    //TODO design sliding effect
+    //TODO find a way to dynamically add data
+    //TODO hide the important keys in a differnt file
     //TODO make the Markers more sophisticated
     //TODO create a sign in form
     private GoogleMap mMap; // Might be null if Google Play services APK is not available.
@@ -29,10 +36,34 @@ public class MapsActivity extends FragmentActivity {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(this);
 
-        Parse.initialize(this, "TSeJqGQRGo18G0whgiGGsAkOJv8y1Br4vZ3T4jyu", "xjv1Bfyrp7hGeQBYHLz4PEEcPo13N6xBB1ee48VF");
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("key1", "value1");
-        testObject.saveInBackground();
+        int myNumber = 42;
+        String myString = "the number is " + myNumber;
+        Date myDate = new Date();
+
+        JSONArray myArray = new JSONArray();
+        myArray.put(myString);
+        myArray.put(myNumber);
+
+        JSONObject myObject = new JSONObject();
+        try {
+            myObject.put("number", myNumber);
+            myObject.put("string", myString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+        byte[] myData = { 4, 8, 16, 32 };
+
+        ParseObject bigObject = new ParseObject("BigObject");
+        bigObject.put("myNumber", myNumber);
+        bigObject.put("myString", myString);
+        bigObject.put("myDate", myDate);
+        bigObject.put("myData", myData);
+        bigObject.put("myArray", myArray);
+        bigObject.put("myObject", myObject);
+        bigObject.put("myNull", JSONObject.NULL);
+        bigObject.saveInBackground();
     }
 
     @Override
